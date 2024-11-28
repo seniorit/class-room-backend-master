@@ -1,0 +1,827 @@
+components:
+  schemas:
+    Booking:
+      type: object
+      properties:
+        student:
+          type: string
+          format: uuid
+        amountPaid:
+          type: number
+          format: decimal
+        completed:
+          type: boolean
+        cancelled:
+          type: boolean
+        attended:
+          type: boolean
+        refunded:
+          type: boolean
+      example:
+        id: 660f30bd0a1cb353c44991d9
+        student: 660f252ef0e07e4b8873627a
+        amountPaid: 75.5
+        completed: false
+        cancelled: false
+        attended: false
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+        isEmailVerified:
+          type: boolean
+        password:
+          type: string
+        role:
+          type: string
+          enum: [user, admin]
+      example:
+        id: 5ebac534954b54139806c112
+        email: fake@example.com
+        isEmailVerified: "false"
+        password: "ABC123."
+        role: user
+
+    Student:
+      type: object
+      properties:
+        guard:
+          type: string
+          description:
+        firstName:
+          type: string
+          description:
+        lastName:
+          type: string
+          description:
+        birthday:
+          type: date
+          description:
+        picture:
+          type: string
+          format: uri
+          description:
+        gender:
+          type: string
+          enum: [male, female, other]
+          description:
+        note:
+          type: string
+          description:
+      example:
+        guard: fd60f82f4b1cdb83214087a1
+        firstName: Abby
+        lastName: Doe
+        birthday: 2000-01-01
+        picture: https://example.com/profile.jpg
+        gender: female
+        note: "Note for Students"
+        id: 8321408d7a160f82f47b1cdb
+
+    StudentByClassification:
+      type: object
+      example:
+        students: 
+          id: 660f252ef0e07e4b8873627a
+          guard: 660f238cf0e07e4b88736241
+          firstName: Abby
+          lastName: Doe
+          fullName: Abby Doe
+          birthday: '2007-10-31T00:00:00.000Z'
+          note: Assing to book
+          gender: female
+          picture:  https://abby.jpg
+          guardProfile:
+            userId: 660f238cf0e07e4b88736241
+            email: sagevzla@gmail.com
+            firstName: John
+            lastName: Doe
+          classifications:
+            [
+              {
+					      name: 10 Years,
+					      description: Older 10 Years,
+					      id: 6650b3bd7f112f31640a2cef,
+              },
+              {
+					      name: Outstanding,
+					      description: Outstanding Alumnus,
+					      id: 6650b3387f112f31640a2cea,
+              }
+            ]
+			
+    Classification:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+      example:
+        name: 10 Years,
+        description: Older 10 Years,
+        id: 6650b3bd7f112f31640a2cef
+
+    UserProfile:
+      type: object
+      properties:
+        user:
+          type: string
+          description: The ID of the user associated with this profile.
+        firstname:
+          type: string
+          description: The first name of the user.
+        lastname:
+          type: string
+          description: The last name of the user.
+        birthday:
+          type: string
+          format: date
+          description: The birthday of the user.
+        postalCode:
+          type: string
+          description: The postal code of the user's address (optional).
+        address:
+          type: string
+          description: The address of the user.
+        phone:
+          type: object
+          properties:
+            number:
+              type: string
+              description: The user's phone number.
+            countryCode:
+              type: string
+              description: The country code for the phone number.
+        profilePicture:
+          type: string
+          format: uri
+          description: URL of the user's profile picture (optional).
+        gender:
+          type: string
+          enum: [male, female, other]
+          description: The gender of the user (must be one of male, female, other).
+      example:
+        user: 60f82f47b1cdb8321408d7a1
+        firstname: John
+        lastname: Doe
+        fullName: John Doe
+        birthday: 1984-02-29T00:00:00.000Z
+        gender: male
+        address: Bedivere Ct Annandale, Virginia 22003
+        postalCode: 22003
+        profilePicture: https://example.com/profile.jpg
+        phone:
+          number: 1234567890
+          countryCode: +1
+        id: 8321408d7a160f82f47b1cdb
+
+    UserRole:
+      type: object
+      properties:
+        name:
+          type: string
+        permissions:
+          type: string []
+        isAdmin:
+          type: boolean
+        isDefault:
+          type: boolean
+      example:
+        permissions: []
+        isAdmin: false
+        isDefault: true
+        name: user
+        id: 65fe5c7c7a76b16f31e72842
+
+    News:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        date:
+          type: date
+        image:
+          type: string
+        author:
+          type: uuid
+        public:
+          type: boolean
+      example:
+        id: d80c62289816d6602f4e7fee,
+        title: Title,
+        description: description,
+        date: 2024-01-01T00:00:00.000Z,
+        image: https://picture.jpg,
+        author: 6602f4e7d80c62289816dfee,
+        public: true
+
+    Theme:
+      type: object
+      properties:
+        name:
+          type: string
+        public:
+          type: boolean
+        logo:
+          type: string
+        img_coach:
+          type: string
+        img_user:
+          type: string
+        bkg_nav:
+          type: string
+        bkg_site:
+          type: string
+        bkg_menu:
+          type: string
+      example:
+        public: true
+        name: Dark Theme
+        logo: https://logo-example.com
+        img_coach: https://img_coach-example.com
+        img_user: https://img_user-example.com
+        bkg_nav: "#FFF555"
+        bkg_site: "#FFF555"
+        bkg_menu: "#FFF555"
+        id: 66037241f269131a1c61306e
+
+    CoachProfile:
+      type: object
+      properties:
+        User:
+          type: string
+        ssn:
+          type: number
+          description: Social Security Number.
+        educationLevel:
+          type: string
+        languages:
+          type: string
+      example:
+        User: 660421578744a9233cb12ac7,
+        ssn: 123010001,
+        educationLevel: Coach Training,
+        languages: ENG,
+        id: 8744a9233cb12ad76604227f
+
+    Order:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+          required: true
+        status:
+          type: string
+          enum: [pending, filled, partial]
+        registrationDate:
+          type: date
+        paymentDate:
+          type: date
+          required: false
+        items:
+          type: array
+          properties:
+            itemId:
+              type: string
+              required: true
+            itemName:
+              type: string
+              required: true
+            itemPrice:
+              type: Number,
+              required: true
+            quantity:
+              type: Number,
+              required: true
+      example:
+        id: 6617fcfde125a90fa8e6d1f3
+        userId: 660f238cf0e07e4b88736241
+        status: filled
+        registrationDate: 2024-04-11T00:08:26.691Z
+        paymentDate: 2024-04-11T00:06:00.000Z
+        items:
+          [
+            {
+              itemId: 660d4da083eb3f3f4cb3b871,
+              itemName: Class One,
+              itemPrice: 25,
+              quantity: 1
+            },
+            {
+              itemId: 660ddab927721a4008c8f60e,
+              itemName: Class Two,
+              itemPrice: 30.46,
+              quantity: 2
+            }
+          ]
+
+    OrderCart:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+          required: true
+        status:
+          type: string
+          enum: [pending, filled, partial]
+        registrationDate:
+          type: date
+        paymentDate:
+          type: date
+          required: false
+        totalPrice:
+          type: number
+        totalQuantity:
+          type: number
+        items:
+          type: array
+          properties:
+            itemId:
+              type: string
+              required: true
+            itemName:
+              type: string
+              required: true
+            itemPrice:
+              type: Number,
+              required: true
+            quantity:
+              type: Number,
+              required: true
+      example:
+        id: 6617fcfde125a90fa8e6d1f3
+        userId: 660f238cf0e07e4b88736241
+        status: pending
+        registrationDate: 2024-04-11T00:08:26.691Z
+        items:
+          [
+            {
+              itemId: 660d4da083eb3f3f4cb3b871,
+              itemName: Class One,
+              itemPrice: 25,
+              quantity: 1
+            },
+            {
+              itemId: 660ddab927721a4008c8f60e,
+              itemName: Class Two,
+              itemPrice: 30.46,
+              quantity: 2
+            }
+          ]
+        totalPrice: 85.92
+        totalQuantity: 3
+    
+    OrderCartFinish:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+          required: true
+        status:
+          type: string
+          enum: [pending, filled, partial]
+        registrationDate:
+          type: date
+        paymentDate:
+          type: date
+          required: false
+        totalPrice:
+          type: number
+        totalQuantity:
+          type: number
+        items:
+          type: array
+          properties:
+            itemId:
+              type: string
+              required: true
+            itemName:
+              type: string
+              required: true
+            itemPrice:
+              type: Number,
+              required: true
+            quantity:
+              type: Number,
+              required: true
+      example:
+        id: 6617fcfde125a90fa8e6d1f3
+        userId: 660f238cf0e07e4b88736241
+        status: filled
+        registrationDate: 2024-04-11T00:08:26.691Z
+        paymentDate: 2024-04-11T00:06:00.000Z
+        items:
+          [
+            {
+              itemId: 660d4da083eb3f3f4cb3b871,
+              itemName: Class One,
+              itemPrice: 25,
+              quantity: 1
+            },
+            {
+              itemId: 660ddab927721a4008c8f60e,
+              itemName: Class Two,
+              itemPrice: 30.46,
+              quantity: 2
+            }
+          ]
+        totalPrice: 85.92
+        totalQuantity: 3
+
+    ClassActivity:
+      type: object
+      properties:
+        location: 
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        activityPicture:
+          type: string []
+        public:
+          type: boolean
+        active:
+          type: boolean
+      example:
+        id: a732a9244cb12ad7ab04157f
+        location: 8744a9233cb55ac7ab09524b
+        name: Activity Name
+        description: Activity Descripion
+        activityPicture: [
+          'https: //picture01.jpg',
+          'https: //picture02.jpg',
+          'https: //picture03.jpg'
+        ]
+        public: true
+        active: true
+
+    ClassSchedule:
+      type: object
+      properties:
+        classActivity:
+          type: uuid
+          format: string
+        classZone:
+          type: uuid
+          format: string
+        coaches":
+          type: string []
+        public":
+          type: boolean
+        recurring":
+          type: boolean
+        slots":
+          type: number
+        schedule: 
+          day: 
+            type: string []
+            enum: [Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday]
+          startTime: 
+            type: string
+          endTime:
+            type: string
+      example:
+        id: 660e9cc11884d438e8d856fd
+        classActivity: 660d4da083eb3f3f4cb3b871
+        classZone: 660e79e7315fae47e801a1fc
+        coaches: [
+          6604227f8744a9233cb12ad7
+        ]
+        recurring: true
+        public: false
+        scheduled: [
+          {
+            _id: 663a23645e934745141291d4,
+            day: Monday,
+            startTime: 8:00,
+            endTime: 10:00
+          },
+          {
+            _id: 663a23645e934745141291d5,
+            day: Tuesday,
+            startTime: 12:00,
+            endTime: 16:00
+          },
+          {
+            _id: 663a23645e934745141291d6,
+            day: Friday,
+            startTime: 12:00,
+            endTime: 16:00
+          }
+        ]
+        validityTime: {
+          startDate: 2024-01-06T00:00:00.000Z,
+          endDate: 2024-01-06T00:00:00.000Z
+        }
+        slots: 5
+
+    ClassScheduleResponse:
+      type: object
+      example:
+        classActivity:
+          name: 'Skate Beginner 1'
+          id: 663a13539b17b2060099f29c
+        classZone:  
+          zone: 'Skating Bowl'
+          id: 6633eb100109620600d5d29a
+        results: 
+          id: 660e9cc11884d438e8d856fd
+          classActivity: 660d4da083eb3f3f4cb3b871
+          classZone: 660e79e7315fae47e801a1fc
+          coaches: [
+            6604227f8744a9233cb12ad7
+          ]
+          recurring: true
+          public: false
+          scheduled: [
+            {
+              _id: 663a23645e934745141291d4,
+              day: Monday,
+              startTime: 8:00,
+              endTime: 10:00
+            },
+            {
+              _id: 663a23645e934745141291d5,
+              day: Tuesday,
+              startTime: 12:00,
+              endTime: 16:00
+            },
+            {
+              _id: 663a23645e934745141291d6,
+              day: Friday,
+              startTime: 12:00,
+              endTime: 16:00
+            }
+          ]
+          validityTime: {
+            startDate: 2024-01-06T00:00:00.000Z,
+            endDate: 2024-01-06T00:00:00.000Z
+          }
+          slots: 5
+
+					
+          
+
+    ClassGroup:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        public:
+          type: boolean
+      example:
+        id: 6610056429a2302b043f8fa4
+        name: Group 01
+        description: Group 01
+        public: false
+
+    classZone:
+      type: object
+      properties:
+        zone:
+          type: string
+      example:
+        id: 8744a9233cb12ad7ab04227f
+        zone: Initial Learning
+
+    ClassInstance:
+      type: object
+      properties:
+        location:
+          type: uuid
+        slots:
+          type: number
+        scheduledStartDate:
+          type: date
+        scheduledEndDate:
+          type: date
+        started:
+          type: boolean
+        startDate:
+          type: date
+        finished:
+          type: boolean
+        finishedDate:
+          type: date
+      example:
+        id: 8744a9233cb55ac7ab09524b
+        location: ff87a9266cb12ad7ab04227f
+        slots: 5
+        students: []
+        scheduledStartDate: 2024-01-15
+        scheduledEndDate: 2024-01-20
+        started: true
+        startDate: 2024-01-15
+        finished: false
+        finishedDate: 2024-01-20
+
+    Product:
+      type: object
+      properties:
+        name: 
+          type: string
+          required: true
+        code: 
+          type: string,
+          required: true
+          unique: true
+        brand: 
+          type: string
+        description: 
+          type: string
+        public: 
+          type: boolean
+          default: false
+        price: 
+          type: number
+        image: 
+          type: string
+        quantity: 
+          type: number
+          default: 0
+      example:
+        id: ff87a9266cb12ad7ab04227f
+        name: key Note
+        code: '01003'
+        brand: Weboo Kye Note
+        description: Key Note by class
+        price: 15
+        image: https://keynote.jpg
+        quantity: 24
+        public: false
+
+    Register:
+      type: object
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        birthday:
+          type: string
+          format: date
+        gender:
+          type: string
+          enum: [male, female, other]
+        phone:
+          type: object
+          properties:
+            number:
+              type: string
+            countryCode:
+              type: string
+        address:
+          type: string
+        postalCode:
+          type: string
+      example:
+        profile:
+          user:
+            isEmailVerified: false
+            role: 
+              permissions: [
+                create
+                update
+                userRegistered
+              ]
+              isAdmin: false
+              isDefault: true
+              name: user
+              id: 6605e8cbc3651437481de499
+            email: jhondow@mail.com
+            id: 661961386d9ce01578289257
+          firstname: John
+          lastname: Doe
+          fullName: John Doe
+          birthday: 2000-01-01T00:00:00.000Z
+          gender: male,
+          address: Bedivere Ct Annandale Virginia
+          postalCode: 22003
+          phone:
+            number: 0102331234
+            countryCode: +1
+          id: 8744a9233cb55ac7ab09524b
+
+    UnauthorizedError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 401
+        message:
+          type: string
+          example: "Please authenticate"
+
+    ForbiddenError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 403
+        message:
+          type: string
+          example: "Forbidden access"
+
+    NotFoundError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 404
+        message:
+          type: string
+          example: "Not found"
+
+    Token:
+      type: object
+      properties:
+        token:
+          type: string
+        expires:
+          type: string
+          format: date-time
+      example:
+        token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZWJhYzUzNDk1NGI1NDEzOTgwNmMxMTIiLCJpYXQiOjE1ODkyOTg0ODQsImV4cCI6MTU4OTMwMDI4NH0.m1U63blB0MLej_WfB7yC2FTMnCziif9X8yzwDEfJXAg
+        expires: 2020-05-12T16:18:04.793Z
+
+    AuthTokens:
+      type: object
+      properties:
+        access:
+          $ref: "#/components/schemas/Token"
+        refresh:
+          $ref: "#/components/schemas/Token"
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: number
+        message:
+          type: string
+
+  responses:
+    DuplicateEmail:
+      description: Email already taken
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: 400
+            message: Email already taken
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: 401
+            message: Please authenticate
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: 403
+            message: Forbidden
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: 404
+            message: Not found
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

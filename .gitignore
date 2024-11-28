@@ -1,0 +1,19 @@
+# Dependencies
+node_modules
+stage
+.vscode
+.lock
+# yarn error logs
+yarn-error.log
+
+# Environment varibales
+.env*
+!.env*.example
+
+# Code coverage
+coverage
+*.log
+logs/*.log
+
+public/img/*
+.aider*
